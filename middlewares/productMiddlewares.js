@@ -1,3 +1,12 @@
+const ProductModel = require('../models/productModel');
+
+const idErr = {
+  err: {
+    code: 'invalid_data',
+    message: 'Wrong id format',
+  },
+};
+
 const validateName = (req, res, next) => {
   const { name } = req.body;
   if (name.length < 5) {
@@ -32,7 +41,17 @@ const validateQuantity = (req, res, next) => {
   next();
 };
 
+const getProductById = async (req, res, next) => {
+  const { id } = req.params;
+  const product = await ProductModel.getById(id);
+  if (!product) {
+    return res.status(422).json(idErr);
+  }
+  next();
+};
+
 module.exports = {
   validateName,
   validateQuantity,
+  getProductById,
 };

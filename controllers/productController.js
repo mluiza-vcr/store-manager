@@ -28,7 +28,6 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   const products = await ProductModel.getAll();
-  if (products.length === 0) return res.status(404).json({ message: 'No products' });
   res.status(200).json({ products });
 };
 
@@ -48,9 +47,16 @@ const updateProductById = async (req, res) => {
   return res.status(200).json(update);
 };
 
+const deleteProductById = async (req, res) => {
+  const { id } = req.params;
+  const deleteProduct = await ProductModel.deleteById(id);
+  return res.status(200).json(deleteProduct);
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
   getProductById,
   updateProductById,
+  deleteProductById,
 };

@@ -14,4 +14,7 @@ Router.put('/:id', productMiddlewares.validateName,
 productMiddlewares.validateQuantity,
 productController.updateProductById);
 
+Router.delete('/:id', productMiddlewares.getProductById,
+productController.deleteProductById);
+
 module.exports = Router;
