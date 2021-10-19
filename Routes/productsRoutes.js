@@ -10,4 +10,8 @@ Router.get('/', productController.getAllProducts);
 
 Router.get('/:id', productController.getProductById);
 
+Router.put('/:id', productMiddlewares.validateName,
+productMiddlewares.validateQuantity,
+productController.updateProductById);
+
 module.exports = Router;
