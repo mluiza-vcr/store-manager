@@ -36,7 +36,6 @@ const deleteById = async (id) => {
   return deleteProduct.value;
 };
 
-
 module.exports = {
   create,
   getAll,
