@@ -9,6 +9,7 @@ const idErr = {
 
 const validateName = (req, res, next) => {
   const { name } = req.body;
+  console.log(name);
   if (name.length < 5) {
     return res.status(422).json({
       err: {

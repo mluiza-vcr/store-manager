@@ -10,4 +10,7 @@ Router.get('/', salesController.getAllSales);
 
 Router.get('/:id', salesController.getSaleById);
 
+Router.put('/:id', salesMiddlewares.validateQuantity,
+  salesController.updateSale);
+
 module.exports = Router;
