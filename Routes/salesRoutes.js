@@ -6,4 +6,8 @@ Router.post('/', salesMiddlewares.validateId,
   salesMiddlewares.validateQuantity,
   salesController.createSale);
 
-  module.exports = Router;
+Router.get('/', salesController.getAllSales);
+
+Router.get('/:id', salesController.getSaleById);
+
+module.exports = Router;
