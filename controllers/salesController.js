@@ -8,6 +8,13 @@ const saleErr = {
   },
 };
 
+const deleteErr = {
+  err: {
+    code: 'invalid_data',
+    message: 'Wrong sale ID format',
+  },
+};
+
 const createSale = async (req, res) => {
   const data = await SaleModel.create(req.body);
   res.status(200).json(data);
@@ -29,9 +36,18 @@ const updateSale = async (req, res) => {
   res.status(200).json(update);
 };
 
+const deleteSale = async (req, res) => {
+  const { id } = req.params;
+  const verifyId = await SaleModel.getById(id);
+  if (!verifyId) return res.status(422).json(deleteErr);
+  const deleteOk = await SaleModel.deleteById(id);
+  res.status(200).json(deleteOk);
+};
+
 module.exports = {
   createSale,
   getAllSales,
   getSaleById,
   updateSale,
+  deleteSale,
 };
