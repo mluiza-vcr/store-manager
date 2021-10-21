@@ -28,6 +28,20 @@ const updateById = async (id, name, quantity) => {
   return update.value;
 };
 
+const updateQuantity = async (id, qty) => {
+  if (!(ObjectId.isValid(id))) return null;
+  const db = await connection();
+  await db.collection('products').updateOne({ _id: ObjectId(id) },
+    { $inc: { quantity: -qty } });
+};
+
+const restoreQuantity = async (id, qty) => {
+  if (!(ObjectId.isValid(id))) return null;
+  const db = await connection();
+  await db.collection('products').updateOne({ _id: ObjectId(id) },
+    { $inc: { quantity: qty } });
+};
+
 const deleteById = async (id) => {
   if (!(ObjectId.isValid(id))) return null;
   const db = await connection();
@@ -41,4 +55,6 @@ module.exports = {
   getById,
   updateById,
   deleteById,
+  updateQuantity,
+  restoreQuantity,
 };

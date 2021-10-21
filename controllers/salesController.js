@@ -1,5 +1,6 @@
 // const Sale = require('../services/saleService');
 const SaleModel = require('../models/saleModel');
+const ProductModel = require('../models/productModel');
 
 const saleErr = {
   err: {
@@ -15,8 +16,15 @@ const deleteErr = {
   },
 };
 
+const changeQuantityProduct = (req, func) => {
+  req.forEach(async (elemento) => {
+    await func(elemento.productId, elemento.quantity);
+  });
+};
+
 const createSale = async (req, res) => {
   const data = await SaleModel.create(req.body);
+  changeQuantityProduct(req.body, ProductModel.updateQuantity);
   res.status(200).json(data);
 };
 
@@ -33,6 +41,7 @@ const getSaleById = async (req, res) => {
 
 const updateSale = async (req, res) => {
   const update = await SaleModel.updateById(req.params.id, ...req.body);
+  changeQuantityProduct(req.body, ProductModel.updateQuantity);
   res.status(200).json(update);
 };
 
@@ -41,6 +50,7 @@ const deleteSale = async (req, res) => {
   const verifyId = await SaleModel.getById(id);
   if (!verifyId) return res.status(422).json(deleteErr);
   const deleteOk = await SaleModel.deleteById(id);
+  changeQuantityProduct(deleteOk.itensSold, ProductModel.restoreQuantity);
   res.status(200).json(deleteOk);
 };
 
