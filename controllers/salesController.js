@@ -16,6 +16,24 @@ const deleteErr = {
   },
 };
 
+const qtyErr = {
+  err: {
+    code: 'stock_problem',
+    message: 'Such amount is not permitted to sell',
+  },
+};
+
+const compareQuantity = async (req) => {
+  const compare = req.map(async (elemento) => {
+    const product = await ProductModel.getById(elemento.productId);
+    const result = product.quantity - elemento.quantity;
+    if (result < 0) {
+      return true;
+    } 
+  });
+ return Promise.all(compare).then((resp) => resp);
+};
+
 const changeQuantityProduct = (req, func) => {
   req.forEach(async (elemento) => {
     await func(elemento.productId, elemento.quantity);
@@ -23,6 +41,10 @@ const changeQuantityProduct = (req, func) => {
 };
 
 const createSale = async (req, res) => {
+  const compare = await compareQuantity(req.body);
+  if (compare.includes(true)) {
+    return res.status(404).json(qtyErr);
+  }
   const data = await SaleModel.create(req.body);
   changeQuantityProduct(req.body, ProductModel.updateQuantity);
   res.status(200).json(data);
