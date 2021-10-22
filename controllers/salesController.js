@@ -31,7 +31,7 @@ const compareQuantity = async (req) => {
       return true;
     } 
   });
- return Promise.all(compare).then((resp) => resp);
+ return Promise.all(compare);
 };
 
 const changeQuantityProduct = (req, func) => {
